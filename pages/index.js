@@ -1,89 +1,54 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import Header from '../components/Header'
 import styles from '../styles/Home.module.css'
-// import { loadData } from '../lib/data.js'
 
-// export async function getServerSideProps() {
-//   const data = await loadData()
-//   return {
-//     props: {
-//       data,
-//     },
-//   }
-// }
-
-export default function Home(props) {
+export default function Home() {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Header />
+      <main className={styles.main}>
+        <section>
+          <h2>Banner</h2>
+          <div>
+            <Link href="/News/FMRelated">FM Related News</Link>
+            <Link href="/Search">Player Search</Link>
+            <Link href="/Search/Club">Club Players</Link>
+            <Link href="/News/GlobalNews">Global Football News</Link>
+          </div>
+        </section>
 
-      <main>
-        <h1 className={styles.title}>Welcome to my blog!</h1>
+        <section>
+          <h2>Best Community Posts</h2>
+          <Link href="/Community/1">Post 1</Link>
+          <Link href="/Community/2">Post 2</Link>
+          <Link href="/Community/3">Post 3</Link>
+          <Link href="/Community/4">Post 4</Link>
+          <Link href="/Community/5">Post 5</Link>
+        </section>
+
+        <section>
+          <h2>Best AI Search Keywords</h2>
+          <Link href="/AISearch">Keyword 1</Link>
+          <Link href="/AISearch">Keyword 2</Link>
+          <Link href="/AISearch">Keyword 3</Link>
+          <Link href="/AISearch">Keyword 4</Link>
+          <Link href="/AISearch">Keyword 5</Link>
+        </section>
+
+        <section>
+          <h2>Frequently Searched Players</h2>
+          <div>
+            <Link href="/Player">View All Players</Link>
+            <Link href="/Search/Popular">View Popular Players</Link>
+            <Link href="/Search/NewPlayers">View New Players</Link>
+          </div>
+        </section>
       </main>
 
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-        </a>
+        <p>Footer content goes here</p>
       </footer>
-
-      <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
     </div>
   )
 }

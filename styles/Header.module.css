@@ -1,0 +1,38 @@
+/* Header.module.css */
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 1000;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 10px;
+}
+
+.navigationList {
+  display: flex;
+  justify-content: space-around;
+}
+
+.loginButton {
+  display: flex;
+  justify-content: flex-end;
+}
