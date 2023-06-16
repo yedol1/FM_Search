@@ -22,7 +22,7 @@ export default function handler(req, res) {
       offset = 20
     }
 
-    const query = `SELECT * FROM fm_table WHERE age=20 LIMIT ${limit} OFFSET ${offset}`
+    const query = `SELECT * FROM fm_table LIMIT ${limit} OFFSET ${offset}`
     connection.query(query, (err, result) => {
       if (err) {
         console.error(err)

@@ -12,14 +12,14 @@ export default function Home() {
           <h2>Banner</h2>
           <div>
             <Link href="/News/FMRelated">FM Related News</Link>
-            <Link href="/Search">Player Search</Link>
+            <Link href="/Search/YearOfPlayers">Player Search</Link>
             <Link href="/Search/Club">Club Players</Link>
             <Link href="/News/GlobalNews">Global Football News</Link>
           </div>
         </section>
 
         <section>
-          <h2>Best Community Posts</h2>
+          <h2>자유게시판 Best 글목록</h2>
           <Link href="/Community/1">Post 1</Link>
           <Link href="/Community/2">Post 2</Link>
           <Link href="/Community/3">Post 3</Link>
@@ -28,7 +28,7 @@ export default function Home() {
         </section>
 
         <section>
-          <h2>Best AI Search Keywords</h2>
+          <h2>가장 많이 선택한 필터목록</h2>
           <Link href="/AISearch">Keyword 1</Link>
           <Link href="/AISearch">Keyword 2</Link>
           <Link href="/AISearch">Keyword 3</Link>
@@ -37,11 +37,11 @@ export default function Home() {
         </section>
 
         <section>
-          <h2>Frequently Searched Players</h2>
+          <h2>FM Best 자료</h2>
           <div>
-            <Link href="/Player">View All Players</Link>
-            <Link href="/Search/Popular">View Popular Players</Link>
-            <Link href="/Search/NewPlayers">View New Players</Link>
+            <Link href="/Community/FMResources">Best 자료1</Link>
+            <Link href="/Community/FMResources">Best 자료2</Link>
+            <Link href="/Community/FMResources">Best 자료3</Link>
           </div>
         </section>
       </main>

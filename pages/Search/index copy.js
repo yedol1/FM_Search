@@ -3,13 +3,17 @@ import axios from 'axios'
 import Link from 'next/link'
 import styles from '../../styles/SearchList.module.css'
 
-const PER_PAGE = 20
-
 export async function getServerSideProps(context) {
   const page = context.query.page ? context.query.page : 1
-  const response = await axios.get(
-    `http://localhost:3000/api/data?page=${page}`
-  )
+  const name = context.query.name ? context.query.name : ''
+  const position = context.query.position ? context.query.position : ''
+  const response = await axios.get('/api/data', {
+    params: {
+      page: page,
+      name: name,
+      position: position,
+    },
+  })
 
   return {
     props: {
@@ -23,6 +27,8 @@ export default function Search({ initialData, page: initialPage }) {
   const [players, setPlayers] = useState(initialData)
   const [page, setPage] = useState(initialPage)
   const [endPage, setEndPage] = useState(false)
+  const [name, setName] = useState('')
+  const [position, setPosition] = useState('')
 
   useEffect(() => {
     if (page >= initialPage && !endPage) {
@@ -30,10 +36,12 @@ export default function Search({ initialData, page: initialPage }) {
     } else {
       setEndPage(false)
     }
-  }, [page, initialPage, endPage])
+  }, [page, initialPage, endPage, name, position])
 
   const fetchPage = async (pageNumber) => {
-    const response = await axios.get(`/api/data?page=${pageNumber}`)
+    const response = await axios.get(
+      `/api/data?page=${pageNumber}&name=${name}&position=${position}`
+    )
     let newData = response.data
 
     if (newData.length === 0) {
@@ -67,10 +75,37 @@ export default function Search({ initialData, page: initialPage }) {
   const handleNextPage = () => {
     setPage(page + 1)
   }
-  console.log(players)
+
+  const handleNameChange = (e) => {
+    setName(e.target.value)
+  }
+
+  const handlePositionChange = (e) => {
+    setPosition(e.target.value)
+  }
+
+  const handleSearch = () => {
+    fetchPage(page)
+  }
+
   return (
     <div>
       <h1>Search</h1>
+      <div>
+        <input
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+          placeholder="Name"
+        />
+        <input
+          type="text"
+          value={position}
+          onChange={handlePositionChange}
+          placeholder="Position"
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
