@@ -38,13 +38,13 @@ export default function Search({
   }, [page])
 
   const fetchPage = async (pageNumber, playerName, playerPosition) => {
-    const response = await fetchSearchData(
+    const responseData = await fetchSearchData(
       pageNumber,
       playerName,
       playerPosition
     )
 
-    let newData = response.data
+    let newData = responseData
 
     if (newData.length === 0) {
       setEndPage(true)
@@ -87,8 +87,8 @@ export default function Search({
   }
 
   const handleSearch = async () => {
-    setPage(1) // Reset the page to 1 when performing a new search
-    await fetchPage(1, name, position) // Fetch new data based on the name and position entered
+    setPage(1)
+    await fetchPage(1, name, position)
   }
   return (
     <div>
