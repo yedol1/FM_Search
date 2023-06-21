@@ -21,9 +21,10 @@ export default function handler(req, res) {
     if (page === 0) {
       offset = 20
     }
-
-    const query = `SELECT * FROM fm_table LIMIT ${limit} OFFSET ${offset}`
-    connection.query(query, (err, result) => {
+    const name = req.query.name ? req.query.name : ''
+    const position = req.query.position ? req.query.position : ''
+    const query = `SELECT * FROM fm_table WHERE Name LIKE "%${name}%" AND Position LIKE "%${position}%" LIMIT ${limit} OFFSET ${offset}`
+    connection.query(query, name, (err, result) => {
       if (err) {
         console.error(err)
         res.status(500).json({ error: 'Database query failed' })

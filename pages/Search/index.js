@@ -1,39 +1,49 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Link from 'next/link'
 import styles from '../../styles/SearchList.module.css'
-
-const PER_PAGE = 20
+import { fetchSearchData } from '../../lib/api/searchAPI'
 
 export async function getServerSideProps(context) {
   const page = context.query.page ? context.query.page : 1
-  const response = await axios.get(
-    `http://localhost:3000/api/data?page=${page}`
-  )
+  const name = context.query.name ? context.query.name : ''
+  const position = context.query.position ? context.query.position : ''
 
+  const responseData = await fetchSearchData(page, name, position)
   return {
     props: {
-      initialData: response.data,
+      initialData: responseData,
       page,
+      name,
+      position,
     },
   }
 }
 
-export default function Search({ initialData, page: initialPage }) {
+export default function Search({
+  initialData,
+  page: initialPage,
+  name: initialName,
+  position: initialPosition,
+}) {
   const [players, setPlayers] = useState(initialData)
   const [page, setPage] = useState(initialPage)
   const [endPage, setEndPage] = useState(false)
-
+  const [name, setName] = useState(initialName)
+  const [position, setPosition] = useState(initialPosition)
   useEffect(() => {
-    if (page >= initialPage && !endPage) {
-      fetchPage(page)
-    } else {
-      setEndPage(false)
+    if (page !== initialPage && !endPage) {
+      fetchPage(page, name, position)
     }
-  }, [page, initialPage, endPage])
+    setEndPage(false)
+  }, [page])
 
-  const fetchPage = async (pageNumber) => {
-    const response = await axios.get(`/api/data?page=${pageNumber}`)
+  const fetchPage = async (pageNumber, playerName, playerPosition) => {
+    const response = await fetchSearchData(
+      pageNumber,
+      playerName,
+      playerPosition
+    )
+
     let newData = response.data
 
     if (newData.length === 0) {
@@ -67,10 +77,37 @@ export default function Search({ initialData, page: initialPage }) {
   const handleNextPage = () => {
     setPage(page + 1)
   }
-  console.log(players)
+
+  const handleNameChange = (e) => {
+    setName(e.target.value)
+  }
+
+  const handlePositionChange = (e) => {
+    setPosition(e.target.value)
+  }
+
+  const handleSearch = async () => {
+    setPage(1) // Reset the page to 1 when performing a new search
+    await fetchPage(1, name, position) // Fetch new data based on the name and position entered
+  }
   return (
     <div>
       <h1>Search</h1>
+      <div>
+        <input
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+          placeholder="Name"
+        />
+        <input
+          type="text"
+          value={position}
+          onChange={handlePositionChange}
+          placeholder="Position"
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
