@@ -14,8 +14,8 @@ export default function handler(req, res) {
       res.status(500).json({ error: 'Database connection failed' })
       return
     }
-    let filter = req.query.filter ? req.query.filter : 'ca'
-    const verify = req.query.verify === 'true' ? 'DESC' : 'ASC'
+    const filter = req.query.filter ? req.query.filter : 'ca'
+    const verify = req.query.verify ? 'DESC' : 'ASC'
     const page = req.query.page ? Number(req.query.page) : 1
     const limit = 20
     let offset = (page - 1) * limit
@@ -32,11 +32,7 @@ export default function handler(req, res) {
       WHEN pa < -10 THEN pa * -2
       WHEN pa < 0 THEN pa * -20
       ELSE pa
-    END AS pa_converted ,
-    CASE
-      WHEN Values_column = 347975206 THEN -1
-      ELSE Values_column
-    END AS Values_column FROM fm_table ORDER BY ${filter} ${verify} LIMIT ${limit} OFFSET ${offset}`
+    END AS pa_converted FROM fm_table ORDER BY ${filter} ${verify} LIMIT ${limit} OFFSET ${offset}`
 
     connection.query(query, (err, result) => {
       if (err) {
