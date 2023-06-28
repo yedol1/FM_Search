@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import styles from '../../styles/SearchList.module.css'
-import { fetchSearchData } from '../../lib/api/searchAPI'
+import { fetchSearchData } from '../api/searchAPI'
 
 export async function getServerSideProps(context) {
   const page = 1
