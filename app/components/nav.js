@@ -10,16 +10,16 @@ function Header() {
         <Image src="/logo.png" width={30} height={30} />
         <ul className={styles.navigationList}>
           <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/">Search</Link>
+          </li>
+          <li>
+            <Link href="/">AI Search</Link>
+          </li>
+          <li>
             <Link href="/">Community</Link>
-          </li>
-          <li>
-            <Link href="/">FM Player Search</Link>
-          </li>
-          <li>
-            <Link href="/">FM AI Player Search</Link>
-          </li>
-          <li>
-            <Link href="/">Latest News</Link>
           </li>
         </ul>
         <div className={styles.loginButton}>

@@ -4,8 +4,12 @@
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #ffffff;
+  height: 94px;
+  background-color: transparent;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sr {
@@ -25,13 +29,23 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 10px;
+  width: 90%;
 }
 
 .navigationList {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
 }
-
+.navigationList li {
+  margin-left: 40px;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 70.187%;
+}
 .loginButton {
   display: flex;
   justify-content: flex-end;
