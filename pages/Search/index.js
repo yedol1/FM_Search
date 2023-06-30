@@ -1,34 +1,36 @@
-'use client'
-
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import styles from '../styles/SearchList.module.css'
-import axios from './api/axios'
-import { GET } from './api/route'
+import styles from '../../styles/SearchList.module.css'
+import { fetchSearchData } from '../api/searchAPI'
 
-// export async function getServerSideProps(context) {
-//   const page = 1
-//   const filter = 'ca'
-//   const verify = true
-//   const responseData = await fetchSearchData(1, filter, verify)
-//   return {
-//     props: {
-//       initialData: responseData,
-//       page,
-//       filter,
-//       verify,
-//     },
-//   }
-// }
+export async function getServerSideProps(context) {
+  const page = 1
+  const filter = 'ca'
+  const verify = true
+  const responseData = await fetchSearchData(1, filter, verify)
+  return {
+    props: {
+      initialData: responseData,
+      page,
+      filter,
+      verify,
+    },
+  }
+}
 
-export default function Search() {
-  const [players, setPlayers] = useState([])
-  const [page, setPage] = useState(1)
+export default function Search({
+  initialData,
+  page: initialPage,
+  filter: initialFilter,
+  verify: initialVerify,
+}) {
+  const [players, setPlayers] = useState(initialData)
+  const [page, setPage] = useState(initialPage)
   const [endPage, setEndPage] = useState(false)
   const [name, setName] = useState('')
   const [position, setPosition] = useState('')
-  const [verify, setVerify] = useState(true)
-  const [filter, setFilter] = useState('ca')
+  const [verify, setVerify] = useState(initialVerify)
+  const [filter, setFilter] = useState(initialFilter)
 
   useEffect(() => {
     if (!endPage) {
@@ -38,15 +40,19 @@ export default function Search() {
   }, [page, filter, verify])
 
   const fetchPage = async (pageNumber, filter, verify) => {
-    const responseData = await GET(pageNumber, filter, verify)
+    try {
+      const responseData = await fetchSearchData(pageNumber, filter, verify)
 
-    if (responseData.length === 0) {
-      setEndPage(true)
-      alert('더 이상 조건을 만족하는 선수는 없습니다.')
-      return
+      if (responseData.length === 0) {
+        setEndPage(true)
+        alert('더 이상 조건을 만족하는 선수는 없습니다.')
+        return
+      }
+
+      setPlayers(responseData)
+    } catch (error) {
+      console.error('Error fetching data: ', error)
     }
-
-    setPlayers(responseData)
   }
   const handleFilterChange = (newFilter) => {
     if (filter === newFilter) {
