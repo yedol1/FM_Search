@@ -1,13 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Header.module.css'
+import { ReactElement } from 'react'
 
-function Header() {
+const Header = (): ReactElement => {
   return (
     <header className={styles.header}>
       <h1 className={styles.sr}>Logo</h1>
       <nav className={styles.nav}>
-        <Image src="/logo.png" width={30} height={30} />
+        <Image src="/logo.png" width={30} height={30} alt="Logo" />
         <ul className={styles.navigationList}>
           <li>
             <Link href="/">Community</Link>

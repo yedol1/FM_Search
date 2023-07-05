@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import Link from 'next/link'
 import styles from '../../styles/SearchList.module.css'
-import { fetchSearchData } from '../api/searchAPI'
+import { fetchSearchData } from '../../lib/api/searchAPI'
+import { Player, SearchProps } from './types'
+import useCheckBoxOption, {
+  CheckBoxOption,
+} from '../../hooks/useCheckBoxOption'
 
 export async function getServerSideProps(context) {
   const page = 1
@@ -18,30 +22,57 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function Search({
+const Search: React.FC<SearchProps> = ({
   initialData,
   page: initialPage,
   filter: initialFilter,
   verify: initialVerify,
-}) {
-  const [players, setPlayers] = useState(initialData)
-  const [page, setPage] = useState(initialPage)
-  const [endPage, setEndPage] = useState(false)
-  const [name, setName] = useState('')
-  const [position, setPosition] = useState('')
-  const [verify, setVerify] = useState(initialVerify)
-  const [filter, setFilter] = useState(initialFilter)
-
+}) => {
+  const [players, setPlayers] = useState<Player[]>(initialData)
+  const [page, setPage] = useState<number>(initialPage)
+  const [endPage, setEndPage] = useState<boolean>(false)
+  const [name, setName] = useState<string>('')
+  const [position, setPosition] = useState<string>('')
+  const [verify, setVerify] = useState<boolean>(initialVerify)
+  const [filter, setFilter] = useState<string>(initialFilter)
+  const { options, handleCheckBoxChange } = useCheckBoxOption()
+  const positions = [
+    'GK',
+    'DL',
+    'DC',
+    'DR',
+    'WBL',
+    'WBR',
+    'DM',
+    'ML',
+    'MC',
+    'MR',
+    'AML',
+    'AMC',
+    'AMR',
+    'ST',
+  ]
+  console.log(options)
   useEffect(() => {
     if (!endPage) {
-      fetchPage(page, filter, verify)
+      fetchPage(page, filter, verify, options)
     }
     setEndPage(false)
-  }, [page, filter, verify])
+  }, [page, filter, verify, options])
 
-  const fetchPage = async (pageNumber, filter, verify) => {
+  const fetchPage = async (
+    pageNumber: number,
+    filter: string,
+    verify: boolean,
+    options: CheckBoxOption[]
+  ): Promise<void> => {
     try {
-      const responseData = await fetchSearchData(pageNumber, filter, verify)
+      const responseData = await fetchSearchData(
+        pageNumber,
+        filter,
+        verify,
+        options
+      )
 
       if (responseData.length === 0) {
         setEndPage(true)
@@ -54,7 +85,8 @@ export default function Search({
       console.error('Error fetching data: ', error)
     }
   }
-  const handleFilterChange = (newFilter) => {
+
+  const handleFilterChange = (newFilter: string): void => {
     if (filter === newFilter) {
       setVerify(!verify)
     } else {
@@ -62,6 +94,7 @@ export default function Search({
     }
     setFilter(newFilter)
   }
+
   const handlePrevPage = () => {
     if (page > 1) {
       setPage(page - 1) // 이전 페이지로 이동
@@ -75,11 +108,11 @@ export default function Search({
     setPage(page + 1)
   }
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
 
-  const handlePositionChange = (e) => {
+  const handlePositionChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPosition(e.target.value)
   }
 
@@ -90,6 +123,24 @@ export default function Search({
   return (
     <div>
       <h1>Search</h1>
+      <section>
+        <fieldset>
+          <legend>Positions</legend>
+          {positions.map((position) => (
+            <div key={position}>
+              <input
+                type="checkbox"
+                id={position}
+                name="position"
+                value={position}
+                onChange={handleCheckBoxChange()}
+              />
+              <label htmlFor={position}>{position}</label>
+            </div>
+          ))}
+        </fieldset>
+      </section>
+
       <div>
         <input
           type="text"
@@ -150,3 +201,5 @@ export default function Search({
     </div>
   )
 }
+
+export default Search
